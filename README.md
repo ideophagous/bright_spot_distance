@@ -1,6 +1,8 @@
 Code developed by Mounir AFIFI in Python 2.7 for a job interview
 
-Intent: Given a grayscale image with a small bright spot in a darker background, 
+Intent: 
+
+Given a grayscale image with a small bright spot in a darker background, 
 the program has to find the distance of the bright spot to the center of the
 image.
 
