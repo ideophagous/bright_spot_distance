@@ -1,5 +1,8 @@
 from PIL import Image
 from math import sqrt
+import cv2
+import numpy as np
+import os
 
 BRIGHT_SPOT_SIZE_THRESHOLD_PARAMETER  = 1/2500.0
 NEIGHBORHOOD_PARAMETER = 5
@@ -12,23 +15,15 @@ def get_image(path):
         image = Image.open(path) #grayscale encoding
         if(image.mode!="I;16"):
             image = image.convert('L')
-            #image = check_convert_int16(path,image)
             
         else:
-            image = check_convert_int16(path).convert('L')
+            image = cv2.imread(path).astype(np.uint8)
+            cv2.imwrite('temp.jpg', image)
+            image = Image.open('temp.jpg').convert('L')
+            os.remove('temp.jpg')
         return image
     except IOError:
         return None
-
-def check_convert_int16(path):
-    x = path.split('.')
-    if(x[-1] in ['tif','tiff']):
-        image = Image.open(path).convert("I;16")
-        for i in range(image.size[0]):
-            for j in range(image.size[1]):
-                image.putpixel((i,j),image.getpixel((i,j))//256)
-                image.save(path+"-converted.tif")   
-        return image
             
 
 def get_brightness_threshold(image):
@@ -121,24 +116,15 @@ def get_distance_to_center(image_center, spot_center):
         return sqrt((image_center[0]-spot_center[0])**2+(image_center[1]-spot_center[1])**2)
 
 if __name__=='__main__':
-    #image1 = get_image("spot1.jpg")
-    #print(check_int16("spot1.jpg",image1))
-    image1 = get_image("spot1.tif")
+
+    paths = ["spot1.tif","spot2.tif","spot3.tif","spot4.tif","black.tif","white.tif","test1.tif","test2.png"]
     
-    #print(check_int16("spot1.tif",image1))
-    '''image2 = get_image("spot2.jpg")
-    image3 = get_image("spot3.jpg")
-
-    bright_spot1 = get_bright_spot(get_neighborhood_list(get_bright_pixel_list(image1)))
-    bright_spot2 = get_bright_spot(get_neighborhood_list(get_bright_pixel_list(image2)))
-    bright_spot3 = get_bright_spot(get_neighborhood_list(get_bright_pixel_list(image3)))
-
-    distance_to_center1 = get_distance_to_center(get_image_center(image1), get_bright_spot_center(bright_spot1))
-    distance_to_center2 = get_distance_to_center(get_image_center(image2), get_bright_spot_center(bright_spot2))
-    distance_to_center3 = get_distance_to_center(get_image_center(image3), get_bright_spot_center(bright_spot3))
-
-    print("The distance between the bright spot and the center of the image spot1.jpg is: {0:.2f}".format(distance_to_center1))
-    print("The distance between the bright spot and the center of the image spot2.jpg is: {0:.2f}".format(distance_to_center2))
-    print("The distance between the bright spot and the center of the image spot3.jpg is: {0:.2f}".format(distance_to_center3))'''
-    
+    for i in range(len(paths)):
+        image = get_image("images/"+paths[i])
+        bright_spot = get_bright_spot(get_neighborhood_list(get_bright_pixel_list(image)))
+        distance_to_center = get_distance_to_center(get_image_center(image), get_bright_spot_center(bright_spot))
+        if(distance_to_center!=None):
+            print("The distance between the bright spot and the center of the image "+paths[i]+" is: {0:.2f}".format(distance_to_center))
+        else:
+            print(paths[i]+": Invalid image or file!")
     
