@@ -59,7 +59,11 @@ def get_brightness_threshold(image):
     representing the bright spot was observed to be
     lower than the total number of pixels in the
     image divided by 2500, mostly by a significant
-    degree.
+    degree. Increasing the value of the parameter
+    would simply slow down the calculations, and
+    potentially cause an error in calculating the
+    center of the bright spot, since more pixels
+    from the dark background might be included.
 
     Input:
     - image: the image in grayscale.
