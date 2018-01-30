@@ -8,8 +8,27 @@ BRIGHT_SPOT_SIZE_THRESHOLD_PARAMETER  = 1/2500.0
 NEIGHBORHOOD_PARAMETER = 5
 
 
-
+# === Getting the image from path ===
 def get_image(path):
+
+    """
+    Gets the image from path and returns it in
+    grayscale mode.
+    If the pixel colors are encoded on 16 bits
+    (values from 0 to 65535), it converts the
+    image to 8-bit encoded pixels.
+    If there's an input error, the function
+    returns None.
+
+    Input:
+    - path: relative or absolute path at which
+    the image is located.
+
+    Output:
+    - image: 8-bit encoded image in grayscale
+    mode.
+    Or None, if there's an IOError.
+    """
     try:
         
         image = Image.open(path) #grayscale encoding
@@ -18,15 +37,49 @@ def get_image(path):
             
         else:
             image = cv2.imread(path).astype(np.uint8)
-            cv2.imwrite('temp.jpg', image)
-            image = Image.open('temp.jpg').convert('L')
-            os.remove('temp.jpg')
+            cv2.imwrite('temp.jpg', image) #save as a temporary file
+            image = Image.open('temp.jpg').convert('L') #load temporary file and convert to grayscale mode
+            os.remove('temp.jpg') #remove temporary file
         return image
     except IOError:
         return None
             
-
+# === Getting the brightness threshold ===
 def get_brightness_threshold(image):
+    """
+    Getting the brightness threshold, defined as
+    the smallest color code such that the number
+    of pixels that have that color or a brighter
+    one (i.e. larger color code), does not exceed
+    the proportion of pixels in the image defined
+    by the constant BRIGHT_SPOT_SIZE_THRESHOLD_PARAMETER
+    which was fixed at 1/2500 of the image. The
+    value of the parameter was chosen to fit with
+    the provided examples, where the number of pixels
+    representing the bright spot was observed to be
+    lower than the total number of pixels in the
+    image divided by 2500, mostly by a significant
+    degree.
+
+    Input:
+    - image: the image in grayscale.
+
+    Intermediary Variables:
+    - bright_portion: maximum number of pixels
+    that should be part of the bright spot.
+    - color_proportions: a list of tuples each
+    containing the color code and the number
+    of pixels that have that color code.
+    - pixel_total: a counter for the number of
+    pixels starting from the last value in
+    color_proportions, and going downwards until
+    bright_portion is exceeded.
+    
+
+    Output:
+    - brightness_threshold: an integer representing
+    the brightness threshold, as defined above.
+    """
     if(not image == None):
         bright_portion = (BRIGHT_SPOT_SIZE_THRESHOLD_PARAMETER *
                           image.size[0] * image.size[1])
@@ -117,13 +170,12 @@ def get_distance_to_center(image_center, spot_center):
 
 if __name__=='__main__':
 
-    files = ["spot1.tif","spot2.tif","spot3.tif","spot5.tif","black.tif","white.tif","test1.tif","test2.png"]
+    files = ["spot1.tif","spot2.tif","spot3.tif","spot5.tif","black.tif","white.tif","test1.tif","test2.png","spot3 - Copy.jpg"]
     
     for i in range(len(files)):
         image = get_image("images/"+files[i])
         bright_spot = get_bright_spot(get_neighborhood_list(get_bright_pixel_list(image)))
         distance_to_center = get_distance_to_center(get_image_center(image), get_bright_spot_center(bright_spot))
-        print(image.getcolors())
         if(distance_to_center!=None):
             print("The distance between the bright spot and the center of the image "+files[i]+" is: {0:.2f}".format(distance_to_center))
         else:
