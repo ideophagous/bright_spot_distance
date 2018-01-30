@@ -117,14 +117,15 @@ def get_distance_to_center(image_center, spot_center):
 
 if __name__=='__main__':
 
-    paths = ["spot1.tif","spot2.tif","spot3.tif","spot4.tif","black.tif","white.tif","test1.tif","test2.png"]
+    files = ["spot1.tif","spot2.tif","spot3.tif","spot5.tif","black.tif","white.tif","test1.tif","test2.png"]
     
-    for i in range(len(paths)):
-        image = get_image("images/"+paths[i])
+    for i in range(len(files)):
+        image = get_image("images/"+files[i])
         bright_spot = get_bright_spot(get_neighborhood_list(get_bright_pixel_list(image)))
         distance_to_center = get_distance_to_center(get_image_center(image), get_bright_spot_center(bright_spot))
+        print(image.getcolors())
         if(distance_to_center!=None):
-            print("The distance between the bright spot and the center of the image "+paths[i]+" is: {0:.2f}".format(distance_to_center))
+            print("The distance between the bright spot and the center of the image "+files[i]+" is: {0:.2f}".format(distance_to_center))
         else:
-            print(paths[i]+": Invalid image or file!")
+            print(files[i]+": Invalid image or file!")
     

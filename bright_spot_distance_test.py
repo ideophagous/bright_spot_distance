@@ -7,7 +7,7 @@ class distance_test_module(unittest.TestCase):
     def setUp(self):
         #the test cases were generated using the following tool:
         #https://www.favicon-generator.org/image-editor/
-        self.images = ["spot1.jpg","spot2.jpg","spot3.jpg","spot4.jpg","spot5.jpg"]
+        self.images = ["images/spot1.jpg","images/spot2.jpg","images/spot3.jpg","images/spot4.jpg","images/spot5.jpg"]
         self.coordinate_sets = [[(457,520),(230,412),(463,520),(937,607)],
                                             [(162,141),(203,53),(227,62)],[(102,121),(448,276),(1651,1663)]]
         self.neighborhoods = [[],[(14,20)],[(10,105),(11,104),(14,100)]]
@@ -68,7 +68,7 @@ class distance_test_module(unittest.TestCase):
 
     #this unit test takes around 18 seconds to execute on my machine
     def test_get_bright_pixel_list(self):
-        '''#for image "spot1.jpg"
+        #for image "spot1.jpg"
         self.assertTrue((457,520) in bsd.get_bright_pixel_list(bsd.get_image(self.images[0])))
         self.assertTrue((230,412) not in bsd.get_bright_pixel_list(bsd.get_image(self.images[0])))
         #for image "spot2.jpg"
@@ -78,7 +78,7 @@ class distance_test_module(unittest.TestCase):
         self.assertTrue((1651,1663) in bsd.get_bright_pixel_list(bsd.get_image(self.images[2])))
         self.assertTrue((102,121) not in bsd.get_bright_pixel_list(bsd.get_image(self.images[2])))
         #for image "spot4.jpg" - this file or image doesn't exist
-        self.assertEqual(bsd.get_bright_pixel_list(bsd.get_image(self.images[3])),None)'''
+        self.assertEqual(bsd.get_bright_pixel_list(bsd.get_image(self.images[3])),None)
         pass
         
     def test_check_neighboring_pixel(self):
@@ -100,7 +100,7 @@ class distance_test_module(unittest.TestCase):
 
     #this unit test takes around 18 seconds to execute on my machine    
     def test_get_bright_spot(self):
-        '''#for image "spot1.jpg"
+        #for image "spot1.jpg"
         self.assertTrue((457,520) in bsd.get_bright_spot(bsd.get_neighborhood_list(
                                         bsd.get_bright_pixel_list(bsd.get_image(self.images[0])))))
         self.assertTrue((230,412) not in bsd.get_bright_spot(bsd.get_neighborhood_list(
@@ -114,7 +114,7 @@ class distance_test_module(unittest.TestCase):
         self.assertTrue((1651,1663) in bsd.get_bright_spot(bsd.get_neighborhood_list(
                                         bsd.get_bright_pixel_list(bsd.get_image(self.images[2])))))
         self.assertTrue((102,121) not in bsd.get_bright_spot(bsd.get_neighborhood_list(
-                                        bsd.get_bright_pixel_list(bsd.get_image(self.images[2])))))'''
+                                        bsd.get_bright_pixel_list(bsd.get_image(self.images[2])))))
         self.assertEqual(bsd.get_bright_spot([]),[])
 
     def test_get_bright_spot_center(self):
@@ -126,13 +126,13 @@ class distance_test_module(unittest.TestCase):
 
     def test_get_image_center(self):
         #for image "spot1.jpg"
-        self.assertEqual(bsd.get_image_center(bsd.get_image("spot1.jpg")),(539.5,539.5))
+        self.assertEqual(bsd.get_image_center(bsd.get_image(self.images[0])),(539.5,539.5))
         #for image "spot2.jpg"
-        self.assertEqual(bsd.get_image_center(bsd.get_image("spot2.jpg")),(134.5,134.5))
+        self.assertEqual(bsd.get_image_center(bsd.get_image(self.images[1])),(134.5,134.5))
         #for image "spot3.jpg"
-        self.assertEqual(bsd.get_image_center(bsd.get_image("spot3.jpg")),(1079.5,1079.5))
+        self.assertEqual(bsd.get_image_center(bsd.get_image(self.images[2])),(1079.5,1079.5))
         #for image "spot4.jpg"
-        self.assertEqual(bsd.get_image_center(bsd.get_image("spot4.jpg")),None)
+        self.assertEqual(bsd.get_image_center(bsd.get_image(self.images[3])),None)
 
     def test_get_distance_to_center(self):
         self.assertAlmostEqual(bsd.get_distance_to_center(self.pixel_list4[0],
