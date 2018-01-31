@@ -1,7 +1,6 @@
 import unittest
 import bright_spot_distance as bsd
 from math import sqrt
-#from PIL import Image
 
 class distance_test_module(unittest.TestCase):
     def setUp(self):
@@ -64,7 +63,7 @@ class distance_test_module(unittest.TestCase):
         #for image "spot3.jpg"
         self.assertEqual(bsd.get_brightness_threshold(bsd.get_image(self.images[2])),25)
         #for image "spot4.jpg" - this file or image doesn't exist
-        self.assertEqual(bsd.get_brightness_threshold(bsd.get_image("spot4.jpg")),None)
+        self.assertEqual(bsd.get_brightness_threshold(bsd.get_image(self.images[3])),None)
 
     #this unit test takes around 18 seconds to execute on my machine
     def test_get_bright_pixel_list(self):
