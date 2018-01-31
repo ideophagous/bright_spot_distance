@@ -12,12 +12,12 @@ Content:
 treatment and for calculating the distance of the bright spot to the center.
 Has a main section with some tests. The image files can be found here:
 https://www.dropbox.com/s/9xx1bx79cifze4q/images.rar?dl=0
-The images must be in a folder titled images located at the same folder as
+The images must be in a folder titled "images" located in the same folder as
 bright_spot_distance.py
 
 Requirements: PIL (pillow), cv2 (OpenCV), numpy, os, math
 
---- bright_spot_distance_test.py: contains unit testing functions for each functions
+--- bright_spot_distance_test.py: contains unit testing functions for each function
 in bright_spot_distance.py. Uses the image files mentioned earlier.
 
 Requirements: bright_spot_distance, unittest, math
