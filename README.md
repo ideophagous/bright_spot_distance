@@ -1,4 +1,4 @@
-Code developed by Mounir AFIFI in Python 2.7 for a job interview
+Code developed by Mounir AFIFI in Python 2.7
 
 Intent: 
 
